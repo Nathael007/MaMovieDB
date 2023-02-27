@@ -17,13 +17,12 @@ namespace MaMovieDB.Models.EntityFramework
         public int Note { get; set; }
 
         [ForeignKey("UtilisateurId")]
-
         [InverseProperty("Notation")]
-        public virtual Utilisateur UtilisateurFilmNavigation { get; set; } = null!;
+        public virtual Utilisateur UtilisateurNotant { get; set; } = null!;
 
         [ForeignKey("FilmId")]
         [InverseProperty("Notation")]
-        public virtual Film NotesFilmNavigation { get; set; } = null!;
+        public virtual Film FilmNote { get; set; } = null!;
 
 
     }

@@ -19,5 +19,7 @@ namespace MaMovieDB.Models.EntityFramework
         public decimal Duree { get; set; }
         [Column("flm_genre")]
         public string? Genre { get; set; }
+
+        public virtual Notation NotesFilm { get; set; } = null!;
     }
 }
