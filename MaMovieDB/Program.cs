@@ -1,3 +1,6 @@
+using MaMovieDB.Models.EntityFramework;
+using Microsoft.EntityFrameworkCore;
+
 namespace MaMovieDB
 {
     public class Program
@@ -12,6 +15,9 @@ namespace MaMovieDB
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<FilmsDBContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("FilmsDBContext")));
 
             var app = builder.Build();
 
