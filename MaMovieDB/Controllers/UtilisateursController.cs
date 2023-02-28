@@ -22,6 +22,7 @@ namespace MaMovieDB.Controllers
 
         // GET: api/Utilisateurs
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Utilisateur>))]
         public async Task<ActionResult<IEnumerable<Utilisateur>>> GetUtilisateur()
         {
             return await _context.Utilisateur.ToListAsync();
@@ -29,6 +30,8 @@ namespace MaMovieDB.Controllers
 
         // GET: api/Utilisateurs/5
         [HttpGet("GetUtilisateurById/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Utilisateur))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Utilisateur>> GetUtilisateurById(int id)
         {
             var utilisateur = await _context.Utilisateur.FindAsync(id);
@@ -42,9 +45,11 @@ namespace MaMovieDB.Controllers
         }
 
         [HttpGet("GetUtilisateurByEmail/{email}")]
-        public async Task<ActionResult<Utilisateur>> GetUtilisateurByEmail(string email)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Utilisateur))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Utilisateur>> GetUtilisateurByEmail(string mail)
         {
-            var utilisateur = await _context.Utilisateur.GetByStringAsync(email);
+            var utilisateur = await _context.Utilisateur.FirstOrDefaultAsync(u => u.Mail.ToUpper() == mail.ToUpper());
 
             if (utilisateur == null)
             {
@@ -54,14 +59,12 @@ namespace MaMovieDB.Controllers
             return utilisateur;
         }
 
-        public async Task<ActionResult<Utilisateur>> GetByStringAsync(string mail)
-        {
-            return await _context.Utilisateur.FirstOrDefaultAsync(u => u.Mail.ToUpper() == mail.ToUpper());
-        }
-
         // PUT: api/Utilisateurs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PutUtilisateur(int id, Utilisateur utilisateur)
         {
             if (id != utilisateur.UtilisateurId)
@@ -93,6 +96,8 @@ namespace MaMovieDB.Controllers
         // POST: api/Utilisateurs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Utilisateur))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Utilisateur>> PostUtilisateur(Utilisateur utilisateur)
         {
             _context.Utilisateur.Add(utilisateur);
@@ -103,6 +108,8 @@ namespace MaMovieDB.Controllers
 
         // DELETE: api/Utilisateurs/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteUtilisateur(int id)
         {
             var utilisateur = await _context.Utilisateur.FindAsync(id);
